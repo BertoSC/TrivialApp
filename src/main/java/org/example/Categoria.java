@@ -4,9 +4,11 @@ import java.util.Objects;
 
 public class Categoria {
     private String nome;
+    private final static String DEFAULT_CATEGORY="General";
 
-
-
+    public Categoria(){
+        this.nome=DEFAULT_CATEGORY;
+    }
     public Categoria(String nome) {
         this.nome = nome;
     }

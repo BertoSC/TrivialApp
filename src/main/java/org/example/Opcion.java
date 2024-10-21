@@ -1,32 +1,44 @@
 package org.example;
 
-final public class Opcion {
-    String enunciado;
+public final class Opcion {
+    private String enunciado;
+    private boolean correcta;
 
-    Boolean correcta;
-
-    public Opcion(){
+    public Opcion() {
     }
 
     public Opcion(String enunciado) {
-        if (enunciado==null){
-            throw new IllegalArgumentException ("El enunciado no puede ser nulo");
-        }
         this.enunciado = enunciado;
-        this.correcta = false;
     }
 
-    public Opcion(String enunciado, Boolean correcta) {
-        if (enunciado==null){
-            throw new IllegalArgumentException ("El enunciado no puede ser nulo");
-        }
+    public Opcion(String enunciado, boolean correcta) {
         this.enunciado = enunciado;
+        this.correcta = correcta;
+    }
+
+    public String getEnunciado() {
+        return enunciado;
+    }
+
+    public boolean isCorrecta() {
+        return correcta;
+    }
+
+    public void setEnunciado(String enunciado) {
+        this.enunciado = enunciado;
+    }
+
+    public void setCorrecta(boolean correcta) {
         this.correcta = correcta;
     }
 
     @Override
     public String toString() {
-        return enunciado + (correcta ? "*" : "");
-    }
+        // Devuelve el enunciado con la primera letra en mayúsculas y el resto en minúsculas, marcando la respuesta correcta con un asterisco:
+        return (enunciado!=null && !enunciado.isEmpty()) ?
+                Character.toUpperCase(enunciado.charAt(0))
+                        + enunciado.substring(1).toLowerCase()
+                        + (correcta ? " *" : "") : "-";
 
+    }
 }

@@ -1,24 +1,36 @@
 package org.example;
 
+import java.util.Arrays;
+
 public enum TipoPregunta {
-        MULTIPLE("Múltiple"), BOOLEAN ("Verdadero/Falso");
-        private String tipoPregunta;
+    MULTIPLE("Multiple"), BOOLEAN("Verdadero/Falso");
 
-        private TipoPregunta(String tipoPregunta){
-            this.tipoPregunta = tipoPregunta;
-        }
+    private String tipoPregunta;
 
-        public String getTipoPregunta() {
-            return tipoPregunta;
-        }
+    TipoPregunta(String tipoPregunta) {
+        this.tipoPregunta = tipoPregunta;
+    }
+
+    public String getTipoPregunta() {
+        return tipoPregunta;
+    }
 
     public static TipoPregunta getTipoPregunta(String tipoPregunta) {
-        for (TipoPregunta tp : TipoPregunta.values()) { // Uso de values()
-            if (tp.tipoPregunta.equalsIgnoreCase(tipoPregunta)) {
-                return tp;
-            }
-        }
-        throw new IllegalArgumentException("Tipo de pregunta no válido: " + tipoPregunta);
-    }
+        // Con programación funcional:
+        return Arrays.stream(TipoPregunta.values())
+                .filter(tp -> tp.getTipoPregunta().equalsIgnoreCase(tipoPregunta)
+                        || tp.name().equalsIgnoreCase(tipoPregunta))
+                .findFirst()
+                .orElse(null);
+
+//        for (TipoPregunta tp : TipoPregunta.values()) {
+//            if (tp.getTipoPregunta().equals(tipoPregunta) || tp.name().equals(tipoPregunta)) {
+//                return tp;
+//            }
+//        }
+//        return null;
     }
 
+
+
+}
