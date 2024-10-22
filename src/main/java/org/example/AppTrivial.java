@@ -32,14 +32,14 @@ public class AppTrivial {
                     @Override
                     public JsonElement serialize(TipoPregunta tipoPregunta, Type type, JsonSerializationContext jsonSerializationContext) {
 
-                        return new JsonPrimitive(tipoPregunta.getTipoPregunta().toLowerCase());
+                        return new JsonPrimitive(tipoPregunta.toString().toLowerCase());
                     }
 
 
                 }).create();
 
         System.out.println(builder.toJson(preguntaMultiple));
-*/
+        */
 
         /*EJERCICIO B
         Gson builder = new GsonBuilder()
@@ -78,6 +78,7 @@ public class AppTrivial {
         */
 
         /*  EJERCICIO D (No creo que este bien)
+        //
         Gson builder = new GsonBuilder()
                 .registerTypeAdapter(Categoria.class, new JsonSerializer<Categoria>() {
                     @Override
@@ -91,19 +92,32 @@ public class AppTrivial {
 
          */
 
-        // EJERCICIO F
+        // EJERCICIO E
 
         Gson builder = new GsonBuilder()
-                .registerTypeAdapter(Pregunta.class, new JsonSerializer<Pregunta>() {
+                .setPrettyPrinting()
+                .registerTypeAdapter(PreguntaMultiple.class, new JsonSerializer<PreguntaMultiple>() {
                     @Override
-                    public JsonElement serialize(Pregunta pregunta, Type type, JsonSerializationContext jsonSerializationContext) {
+                    public JsonElement serialize(PreguntaMultiple preguntaM, Type type, JsonSerializationContext jsonSerializationContext) {
                         JsonObject  js = new JsonObject();
-                        js.add("type", new JsonPrimitive(pregunta.getTipoPregunta().getTipoPregunta().toLowerCase()));
-                        js.add()
-
+                        js.add("type", new JsonPrimitive(preguntaM.getTipoPregunta().getTipoPregunta().toLowerCase()));
+                        js.add("difficulty", new JsonPrimitive((preguntaM.getDificultad().getDificultad().toLowerCase())));
+                        js.add("category", new JsonPrimitive((preguntaM.getCategoria().toString().toLowerCase())));
+                        js.add("question", new JsonPrimitive((preguntaM.getPregunta().toString().toLowerCase())));
+                        js.add("options", new JsonArray((preguntaM.getOpciones().toString().toLowerCase())));
+                        return js;
+                    }
+                })
+                .registerTypeAdapter(PreguntaVerdaderoFalso.class, new JsonSerializer<PreguntaMultiple>() {
+                    @Override
+                    public JsonElement serialize(PreguntaMultiple preguntaMultiple, Type type, JsonSerializationContext jsonSerializationContext) {
                         return null;
                     }
-                }).create();
+                })
+                .create();
+
+        System.out.println(builder.toJson(preguntaMultiple));
+
 
 
     }
