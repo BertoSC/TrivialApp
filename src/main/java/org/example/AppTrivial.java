@@ -17,10 +17,10 @@ public class AppTrivial {
         System.out.println(preguntaTrueFalse);
 
         Pregunta preguntaMultiple = new PreguntaMultiple("¿Cuál de los siguientes lenguajes de programación es orientado a objetos puro?");
-        ((PreguntaMultiple)preguntaMultiple).addOpcion(new Opcion("Java", true))
+        ((PreguntaMultiple) preguntaMultiple).addOpcion(new Opcion("Java", true))
                 .addOpcion(new Opcion("C", false))
-                .addOpcion(new Opcion("Python", true))
-                .addOpcion(new Opcion("Modula-2", true))
+                .addOpcion(new Opcion("Python", false))
+                .addOpcion(new Opcion("Modula-2", false))
                 .setCategoria(new Categoria("Programación"))
                 .setTipoPregunta(TipoPregunta.MULTIPLE)
                 .setDificultad(Dificultad.EASY);
@@ -92,7 +92,7 @@ public class AppTrivial {
 
          */
 
-        // EJERCICIO E
+        /*// EJERCICIO E
 
         Gson builder = new GsonBuilder()
                 .setPrettyPrinting()
@@ -104,22 +104,65 @@ public class AppTrivial {
                         js.add("difficulty", new JsonPrimitive((preguntaM.getDificultad().getDificultad().toLowerCase())));
                         js.add("category", new JsonPrimitive((preguntaM.getCategoria().toString().toLowerCase())));
                         js.add("question", new JsonPrimitive((preguntaM.getPregunta().toString().toLowerCase())));
-                        js.add("options", new JsonArray((preguntaM.getOpciones().toString().toLowerCase())));
+                        JsonArray jsA = new JsonArray();
+                        for(Opcion o: preguntaM.getOpciones()){
+                            JsonObject temp = new JsonObject();
+                            temp.addProperty("enunciado",o.getEnunciado());
+                            temp.addProperty("correcta", o.isCorrecta());
+                            jsA.add(temp);
+                        }
+                        js.add("options", jsA);
                         return js;
                     }
                 })
-                .registerTypeAdapter(PreguntaVerdaderoFalso.class, new JsonSerializer<PreguntaMultiple>() {
+                .registerTypeAdapter(PreguntaVerdaderoFalso.class, new JsonSerializer<PreguntaVerdaderoFalso>() {
                     @Override
-                    public JsonElement serialize(PreguntaMultiple preguntaMultiple, Type type, JsonSerializationContext jsonSerializationContext) {
-                        return null;
+                    public JsonElement serialize(PreguntaVerdaderoFalso preguntaVF, Type type, JsonSerializationContext jsonSerializationContext) {
+                        JsonObject js2 = new JsonObject();
+                        js2.addProperty("type", preguntaVF.getTipoPregunta().getTipoPregunta().toLowerCase());
+                        js2.addProperty("difficulty", preguntaVF.getDificultad().getDificultad().toLowerCase());
+                        js2.addProperty("category", preguntaVF.getCategoria().toString().toLowerCase());
+                        js2.addProperty("question", preguntaVF.getPregunta().toString().toLowerCase());
+                        js2.addProperty("answer", preguntaVF.isRespuesta());
+                        return js2;
                     }
                 })
                 .create();
 
         System.out.println(builder.toJson(preguntaMultiple));
+           */
 
+/*
+        //EJERCICIO F
+        Gson builder = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(PreguntaMultiple.class, new JsonSerializer<PreguntaMultiple>() {
+                    @Override
+                    public JsonElement serialize(PreguntaMultiple preguntaM, Type type, JsonSerializationContext jsonSerializationContext) {
+                        JsonObject js = new JsonObject();
+                        js.add("type", new JsonPrimitive(preguntaM.getTipoPregunta().getTipoPregunta().toLowerCase()));
+                        js.add("difficulty", new JsonPrimitive((preguntaM.getDificultad().getDificultad().toLowerCase())));
+                        js.add("category", new JsonPrimitive((preguntaM.getCategoria().toString().toLowerCase())));
+                        js.add("question", new JsonPrimitive((preguntaM.getPregunta().toString().toLowerCase())));
+                        JsonPrimitive pr;
+                        JsonArray jsA = new JsonArray();
+                        for (Opcion o : preguntaM.getOpciones()) {
+                            JsonObject temp = new JsonObject();
+                            if (o.isCorrecta()) {
+                                pr = new JsonPrimitive(o.getEnunciado().toString().toLowerCase());
+                                js.add("correct answer", pr);
+                            } else {
+                                jsA.add(o.getEnunciado());
+                            }
 
+                            js.add("incorrect answers", jsA);
 
+                        }
+                        return js;
+                    }
+                }).create();
+        System.out.println(builder.toJson(preguntaMultiple));
+*/
     }
 
 
